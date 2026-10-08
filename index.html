@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VAG Essentials</title>
+    <style>
+        body {
+            font-family: Calibri, Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+            text-align: center;
+        }
+
+        .header-container {
+            background-color: #4A5D23;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            border-radius: 15px;
+            box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .header-spacer {
+            flex: 1;
+        }
+
+        .header-center-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+
+        .header-center-group h1 {
+            margin: 0;
+            font-size: 30px;
+            white-space: nowrap;
+        }
+
+        .header-tile {
+            height: 1in;
+            border-radius: 15px;
+            box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+            transition: transform 0.2s;
+            padding: 0 8px;
+            box-sizing: border-box;
+            background-color: #2196F3;
+            width: auto;
+            min-width: 2in;
+        }
+        .header-tile:hover {
+            transform: scale(1.05);
+        }
+        .header-tile img {
+            width: 0.8in;
+            height: 0.8in;
+            border-radius: 10px;
+            object-fit: cover;
+        }
+        .header-tile span {
+            flex: 1;
+            text-align: center;
+            padding: 0 8px;
+        }
+
+        #title-edit-btn {
+            font-size: 14px;
+            padding: 4px 10px;
+            background: rgba(255,255,255,0.25);
+            border: 1px solid rgba(255,255,255,0.4);
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            display: none;
+        }
+        .edit-mode #title-edit-btn {
+            display: inline-block;
+        }
+
+        .tile-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            justify-content: center;
+        }
+
+        .tile-group {
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-rows: auto;
+            gap: 10px;
+            width: 100%;
+            max-width: 5in;
+            margin: 0 auto;
+            min-height: 1.25in;
+        }
+
+        .tile-group-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .tile-group-label {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .tile-group-label span {
+            display: inline-block;
+        }
+
+        .edit-label-btn {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 12px;
+            padding: 2px 5px;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            display: none;
+            cursor: pointer;
+        }
+        .edit-mode .edit-label-btn {
+            display: block;
+        }
+
+        .tile {
+            width: 100%;
+            height: 1.25in;
+            border-radius: 15px;
+            box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+            transition: transform 0.2s, opacity 0.2s;
+            padding: 0 10px;
+            box-sizing: border-box;
+            position: relative;
+            cursor: pointer;
+        }
+        .tile:hover {
+            transform: scale(1.05);
+        }
+        .edit-mode .tile:hover {
+            opacity: 0.8;
+        }
+        .tile img {
+            width: 1in;
+            height: 1in;
+            margin-right: 10px;
+            border-radius: 10px;
+            object-fit: cover;
+        }
+        .tile span {
+            flex: 1;
+            text-align: center;
+            white-space: pre-line;   /* supports line breaks */
+            line-height: 1.25;
+        }
+
+        .edit-btn {
+            position: absolute;
+            right: 34px;
+            top: 5px;
+            font-size: 12px;
+            padding: 2px 5px;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            display: none;
+        }
+        .edit-mode .edit-btn {
+            display: block;
+        }
+
+        .delete-btn {
+            position: absolute;
+            right: 5px;
+            top: 5px;
+            width: 24px;
+            height: 24px;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 16px;
+            line-height: 22px;
+            text-align: center;
+            cursor: pointer;
+            display: none;
+            font-weight: bold;
+            box-shadow: 1px 1px 3px rgba(0,0,0,0.4);
+        }
+        .edit-mode .delete-btn {
+            display: block;
+        }
+        .delete-btn:hover {
+            background-color: #c0392b;
+        }
+
+        .button-container {
+            margin-top: 20px;
+        }
+
+        #edit-mode-btn, #add-tile-btn, #blank-slate-btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin: 0 10px;
+        }
+
+        #edit-mode-btn {
+            background-color: #4CAF50;
+        }
+        #edit-mode-btn.active {
+            background-color: #f44336;
+        }
+
+        #add-tile-btn {
+            background-color: #2196F3;
+        }
+        #add-tile-btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        #blank-slate-btn {
+            background-color: #e74c3c;
+            display: none;
+        }
+        .edit-mode #blank-slate-btn {
+            display: inline-block;
+        }
+        #blank-slate-btn:hover {
+            background-color: #c0392b;
+        }
+
+        .share-container {
+            margin: 16px 0;
+            display: none;
+        }
+        .edit-mode .share-container {
+            display: block;
+        }
+
+        #export-btn, #import-btn {
+            padding: 9px 18px;
+            margin: 0 10px;
+            font-size: 15px;
+            cursor: pointer;
+            border: none;
+            border-radius: 6px;
+            color: white;
+        }
+        #export-btn { background: #8e44ad; }
+        #import-btn { background: #e67e22; }
+
+        .links-container {
+            margin-top: 10px;
+            font-size: 14px;
+        }
+        .links-container a {
+            color: #666;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .links-container a:hover {
+            text-decoration: underline;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .modal-content h2 {
+            margin-top: 0;
+        }
+        .modal-content ul {
+            text-align: left;
+            padding-left: 20px;
+        }
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+        }
+        .close-btn:hover {
+            color: #000;
+        }
+
+        .tile.placeholder {
+            opacity: 0.5;
+        }
+        .tile.dragging {
+            opacity: 0.5;
+            border: 2px dashed #666;
+        }
+        .tile-group.drag-over {
+            border: 2px dashed #2196F3;
+            background-color: rgba(33, 150, 243, 0.1);
+        }
+
+        /* Tile colors */
+        .tile-1  { background-color: #FF6B6B; }
+        .tile-2  { background-color: #4ECDC4; color: black; }
+        .tile-3  { background-color: #45B7D1; }
+        .tile-4  { background-color: #96CEB4; color: black; }
+        .tile-5  { background-color: #FFEEAD; color: black; }
+        .tile-6  { background-color: #D4A5A5; color: black; }
+        .tile-7  { background-color: #9B59B6; }
+        .tile-8  { background-color: #3498DB; }
+        .tile-9  { background-color: #E74C3C; }
+        .tile-10 { background-color: #2ECC71; color: black; }
+        .tile-11 { background-color: #F1C40F; color: black; }
+        .tile-12 { background-color: #E67E22; }
+        .tile-13 { background-color: #8E44AD; }
+        .tile-14 { background-color: #1ABC9C; color: black; }
+        .tile-15 { background-color: #D35400; }
+        .tile-16 { background-color: #34495E; }
+        .tile-17 { background-color: #F39C12; color: black; }
+        .tile-18 { background-color: #16A085; }
+        .tile-19 { background-color: #C0392B; }
+        .tile-20 { background-color: #27AE60; }
+        .tile-21 { background-color: #BDC3C7; color: black; }
+        .tile-22 { background-color: #7F8C8D; }
+        .tile-23 { background-color: #2980B9; }
+        .tile-24 { background-color: #8E44AD; }
+        .tile-25 { background-color: #2C3E50; }
+
+        @media (min-width: 577px) {
+            .tile-group {
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: repeat(2, 1.25in);
+            }
+        }
+        @media (min-width: 993px) {
+            .tile-container {
+                grid-template-columns: repeat(auto-fit, minmax(5.2in, 1fr));
+                max-width: 1200px;
+            }
+            .tile-group {
+                width: 5in;
+                max-width: none;
+            }
+        }
+        @media (max-width: 576px) {
+            .tile-group {
+                width: 70%;
+                max-width: none;
+            }
+            .tile {
+                font-size: 14px;
+            }
+            .tile img {
+                width: 0.8in;
+                height: 0.8in;
+                margin-right: 8px;
+            }
+            #edit-mode-btn, #add-tile-btn, #blank-slate-btn {
+                font-size: 14px;
+                padding: 8px 16px;
+                margin: 5px;
+            }
+            .tile-group-label {
+                font-size: 16px;
+            }
+            .header-container {
+                flex-direction: column;
+                gap: 10px;
+                padding: 15px;
+            }
+            .header-center-group h1 {
+                font-size: 20px;
+            }
+            .header-tile {
+                width: 70%;
+                max-width: 5in;
+                min-width: 0;
+            }
+            .header-spacer {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header-container">
+        <div class="header-spacer"></div>
+
+        <div class="header-center-group">
+            <h1 id="main-title">VAG Essentials</h1>
+            <button id="title-edit-btn">✏️ Edit Title</button>
+        </div>
+
+        <div class="header-spacer"></div>
+
+        <a href="https://keep.google.com" target="_blank" class="header-tile">
+            <img src="https://picsum.photos/96/96?random=25" alt="My Notes">
+            <span>My Notes</span>
+        </a>
+    </div>
+
+    <div class="tile-container" id="tileContainer"></div>
+
+    <div class="button-container">
+        <button id="edit-mode-btn">Enter Edit Mode</button>
+        <button id="add-tile-btn">Add Tile</button>
+        <button id="blank-slate-btn">Create Blank Slate</button>
+    </div>
+
+    <div class="share-container" id="shareContainer">
+        <button id="export-btn">Export Config</button>
+        <button id="import-btn">Import Config</button>
+    </div>
+
+    <div class="links-container">
+        <a id="reset-link">Reset</a> | <a id="help-link">Help</a>
+    </div>
+
+    <div id="help-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" id="close-modal">×</span>
+            <h2>VAG Essentials Help</h2>
+            <p>Welcome to your personalized dashboard! This page gives quick access to your key resources, organized into groups.</p>
+            <ul>
+                <li><strong>Opening links</strong><br>
+                    Click any tile to open the resource in a new tab. The "My Notes" tile links to Google Keep.</li>
+
+                <li><strong>Customizing the dashboard (Edit Mode)</strong><br>
+                    Click <strong>Enter Edit Mode</strong>. You will be asked for a PIN the first time.<br>
+                    Once unlocked you can:
+                    <ul>
+                        <li>Click the red × on any tile to delete it</li>
+                        <li>Click "Edit" on a tile to change its title, URL or image</li>
+                        <li>Use a <strong>+</strong> in the title for a line break (Title+Subtitle)</li>
+                        <li>Drag tiles to reorder them or move them between groups</li>
+                        <li>Click "Edit Label" next to a group name to rename it</li>
+                        <li>Click "Add Tile" to create a new resource</li>
+                        <li>Click the ✏️ Edit Title button to change the dashboard name</li>
+                        <li>Click <strong>Create Blank Slate</strong> to wipe everything and start fresh</li>
+                    </ul>
+                    Editing stays unlocked until you close or reload the page.
+                </li>
+
+                <li><strong>Sharing</strong><br>
+                    The best way to share is to send the HTML file itself. The person who receives it can open it and customize it further.
+                </li>
+
+                <li><strong>Export / Import</strong><br>
+                    Use these buttons if you want to manually copy the configuration as text.
+                </li>
+
+                <li><strong>Reset</strong><br>
+                    Restores the original default tiles and groups.
+                </li>
+
+                <li><strong>Need help?</strong><br>
+                    Contact Ross Webb at ross_webb@sil.org
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        const editModeBtn    = document.getElementById('edit-mode-btn');
+        const addTileBtn     = document.getElementById('add-tile-btn');
+        const blankSlateBtn  = document.getElementById('blank-slate-btn');
+        const resetLink      = document.getElementById('reset-link');
+        const helpLink       = document.getElementById('help-link');
+        const tileContainer  = document.getElementById('tileContainer');
+        const helpModal      = document.getElementById('help-modal');
+        const closeModal     = document.getElementById('close-modal');
+        const mainTitle      = document.getElementById('main-title');
+        const titleEditBtn   = document.getElementById('title-edit-btn');
+        const exportBtn      = document.getElementById('export-btn');
+        const importBtn      = document.getElementById('import-btn');
+        const shareContainer = document.getElementById('shareContainer');
+
+        let editMode = false;
+        let editingUnlocked = false;
+        const editPin = "talua26";          // ← change this PIN if you want
+        const maxTiles = 25;
+        const storageKey = 'vagNecessitiesTiles';
+        const defaultImage = 'https://picsum.photos/96/96?random=1';
+        const placeholderUrl = 'https://example.com/placeholder';
+
+        const defaultTiles = [
+            { title: "Public Folder", url: "https://drive.google.com/drive/folders/1XFqqsy7oaPrG5uCYIhfGxsG_yKLSeaTK?usp=drive_link", image: "https://picsum.photos/96/96?random=1", className: "tile-1", groupIndex: 0 },
+            { title: "Scripture Engagement", url: "https://drive.google.com/drive/folders/1K9GGptUPsFWRNBPOSMTmUaNd5omeK0Iw?usp=drive_link", image: "https://picsum.photos/96/96?random=2", className: "tile-2", groupIndex: 0 },
+            { title: "Translation", url: "https://drive.google.com/drive/folders/1lttBEKOfOhYjClHAc3rWNQsfsbDHaoqq?usp=drive_link", image: "https://picsum.photos/96/96?random=3", className: "tile-3", groupIndex: 0 },
+            { title: "Anthropology", url: "https://drive.google.com/drive/folders/1CKquVHqb4cUdPnw_zosHUDThoAbpBl4V?usp=drive_link", image: "https://picsum.photos/96/96?random=4", className: "tile-4", groupIndex: 0 },
+            { title: "VAG Orientation", url: "https://drive.google.com/drive/folders/1jVccjttmlaR_y1EXRE2lXTy3td1PAUyN?usp=drive_link", image: "https://picsum.photos/96/96?random=5", className: "tile-5", groupIndex: 1 },
+            { title: "Language Learning", url: "https://drive.google.com/drive/folders/1_1JDni_r0tISNk7WqAjaLeA02OwU3da_?usp=drive_link", image: "https://picsum.photos/96/96?random=6", className: "tile-6", groupIndex: 1 },
+            { title: "VAG Staff Handbook", url: "https://drive.google.com/drive/folders/1VGhKja1OAhGIs1gwy4SYueClg7Z6us_5?usp=drive_link", image: "https://picsum.photos/96/96?random=11", className: "tile-11", groupIndex: 2 },
+            { title: "RAMP Archiving", url: "https://drive.google.com/drive/folders/1TF_HVKd9HtjHA5ab9pExNPdK6jvrBQYo?usp=drive_link", image: "https://picsum.photos/96/96?random=8", className: "tile-8", groupIndex: 1 },
+            { title: "SIL Archive", url: "https://www.sil.org/resources/language-culture-archives", image: "https://picsum.photos/96/96?random=9", className: "tile-9", groupIndex: 2 },
+            { title: "Language Program Handbook", url: "https://drive.google.com/drive/folders/108rwXYkyztvQY17HgOxC5kxtXfIy7ATn?usp=drive_link", image: "https://picsum.photos/96/96?random=10", className: "tile-10", groupIndex: 2 },
+            { title: "VAG Media", url: "https://drive.google.com/drive/folders/1zDBcf-c8XQug6CUJ5ks6M0aCuFvLJ_-D?usp=drive_link", image: "https://picsum.photos/96/96?random=7", className: "tile-7", groupIndex: 1 },
+            { title: "Teams' Data", url: "https://drive.google.com/drive/folders/1bQguSwmXvFO3rwe0DL4ipkwWu3Dia4WC?usp=sharing", image: "https://picsum.photos/96/96?random=12", className: "tile-12", groupIndex: 2 },
+            { title: "Free Bible Images", url: "https://www.freebibleimages.org/", image: "https://picsum.photos/96/96?random=13", className: "tile-13", groupIndex: 3 },
+            { title: "SIL Typesetting Images", url: "https://tiny.cc/Gordons", image: "https://picsum.photos/96/96?random=14", className: "tile-14", groupIndex: 3 },
+            { title: "A BLANK for you to use or delete", url: "https://example.com/placeholder", image: "https://picsum.photos/96/96?random=15", className: "tile-15", groupIndex: 3 },
+            { title: "Another blank for balance", url: "https://example.com/placeholder", image: "https://picsum.photos/96/96?random=16", className: "tile-16", groupIndex: 3 }
+        ];
+
+        const defaultGroupLabels = {
+            0: "Core Resources",
+            1: "Learning Tools",
+            2: "Archives",
+            3: "Media"
+        };
+
+        // ── Title editing ────────────────────────────────
+        function editMainTitle() {
+            if (!editMode) return;
+            const current = mainTitle.textContent.trim();
+            const newTitle = prompt('New dashboard title:', current);
+            if (newTitle === null || newTitle.trim() === '') return;
+            mainTitle.textContent = newTitle.trim();
+            document.title = newTitle.trim();
+            saveTilesAndLabels();
+        }
+        titleEditBtn.addEventListener('click', editMainTitle);
+
+        // ── Create tile ──────────────────────────────────
+        function createTile(title, url, image, className) {
+            const tile = document.createElement('a');
+            tile.href = url;
+            tile.target = '_blank';
+            tile.className = `tile ${className}`;
+            if (url === '' || url.includes('example.com')) tile.classList.add('placeholder');
+            tile.setAttribute('data-title', title);
+            tile.setAttribute('draggable', editMode);
+
+            const img = document.createElement('img');
+            img.src = image;
+            img.alt = title;
+            img.onerror = () => { img.src = defaultImage; };
+
+            const span = document.createElement('span');
+            // Convert + into real line breaks for display
+            span.textContent = title.replace(/\+/g, '\n');
+
+            const editCue = document.createElement('span');
+            editCue.className = 'edit-btn';
+            editCue.textContent = 'Edit';
+
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'delete-btn';
+            deleteBtn.textContent = '×';
+            deleteBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                if (confirm(`Delete "${title.replace(/\+/g, ' ')}"?`)) {
+                    const parentGroup = tile.parentElement;
+                    const wrapper = parentGroup.parentElement;
+                    tile.remove();
+                    if (parentGroup.children.length === 0) wrapper.remove();
+                    saveTilesAndLabels();
+                    updateAddButtonState();
+                }
+            });
+
+            tile.appendChild(img);
+            tile.appendChild(span);
+            tile.appendChild(editCue);
+            tile.appendChild(deleteBtn);
+
+            tile.addEventListener('click', (event) => {
+                if (editMode) {
+                    event.preventDefault();
+                    editTile(tile);
+                }
+            });
+
+            tile.addEventListener('dragstart', (event) => {
+                if (!editMode) {
+                    event.preventDefault();
+                    return;
+                }
+                tile.classList.add('dragging');
+                event.dataTransfer.setData('text/plain', '');
+            });
+
+            tile.addEventListener('dragend', () => {
+                tile.classList.remove('dragging');
+                document.querySelectorAll('.tile-group').forEach(g => g.classList.remove('drag-over'));
+            });
+
+            return tile;
+        }
+
+        // ── Edit existing tile ───────────────────────────
+        function editTile(tile) {
+            if (!editMode) return;
+
+            const currentTitle = tile.getAttribute('data-title');
+            const currentUrl   = tile.getAttribute('href');
+            const currentImage = tile.querySelector('img').src;
+
+            // Show existing newlines as + so the single-line prompt is usable
+            const currentTitleForPrompt = currentTitle.replace(/\n/g, '+');
+
+            const newTitle = prompt('Enter new title (use + for a line break)\nExample: Main Title+Subtitle', currentTitleForPrompt);
+            if (newTitle === null) return;
+
+            if (newTitle.toLowerCase() === 'delete') {
+                if (confirm(`Are you sure you want to delete "${currentTitle.replace(/\n/g, ' ')}"?`)) {
+                    const parentGroup = tile.parentElement;
+                    const wrapper = parentGroup.parentElement;
+                    tile.remove();
+                    if (parentGroup.children.length === 0) wrapper.remove();
+                    saveTilesAndLabels();
+                    updateAddButtonState();
+                }
+                return;
+            }
+
+            // Convert + back into real line breaks
+            const finalTitle = newTitle.replace(/\+/g, '\n').trim();
+
+            const newUrl = prompt('Enter new URL:', currentUrl);
+            if (newUrl === null) return;
+
+            const newImage = prompt('Enter new image URL (leave blank to keep current):', currentImage);
+            if (newImage === null) return;
+
+            const imageUrl = newImage.trim() !== '' ? newImage : currentImage;
+            const url = newUrl.trim() !== '' ? newUrl : placeholderUrl;
+
+            tile.setAttribute('data-title', finalTitle);
+            tile.setAttribute('href', url);
+            tile.classList.toggle('placeholder', url === '' || url.includes('example.com'));
+            tile.querySelector('span').textContent = finalTitle;   // already contains \n
+            tile.querySelector('img').src = imageUrl;
+            saveTilesAndLabels();
+        }
+
+        // ── Config helpers ───────────────────────────────
+        function getCurrentConfig() {
+            const tiles = [];
+            const groupLabels = {};
+            const tileGroups = Array.from(tileContainer.querySelectorAll('.tile-group'));
+
+            tileGroups.forEach((group) => {
+                const groupIndex = parseInt(group.dataset.groupIndex);
+                const labelDiv = group.parentElement.querySelector('.tile-group-label');
+                const labelText = labelDiv.dataset.label;
+                if (labelText && !labelText.startsWith('Group ') && labelText !== defaultGroupLabels[groupIndex]) {
+                    groupLabels[groupIndex] = labelText;
+                }
+
+                Array.from(group.children).forEach(tile => {
+                    tiles.push({
+                        title: tile.getAttribute('data-title'),
+                        url: tile.getAttribute('href'),
+                        image: tile.querySelector('img').src,
+                        className: tile.className.split(' ').find(cls => cls.startsWith('tile-')),
+                        groupIndex: groupIndex
+                    });
+                });
+            });
+
+            return {
+                version: 1,
+                title: mainTitle.textContent.trim(),
+                tiles,
+                groupLabels
+            };
+        }
+
+        // ── Export / Import ──────────────────────────────
+        exportBtn.addEventListener('click', () => {
+            const config = getCurrentConfig();
+            const json = JSON.stringify(config, null, 2);
+            navigator.clipboard.writeText(json).then(() => {
+                alert("Configuration copied to clipboard!\n\nYou can paste this into the Import Config button on another copy of this file.");
+            }).catch(() => {
+                prompt("Copy this manually:", json);
+            });
+        });
+
+        importBtn.addEventListener('click', () => {
+            const text = prompt("Paste the exported JSON here:");
+            if (!text) return;
+            try {
+                const config = JSON.parse(text);
+                if (config.version !== 1) throw new Error("Unsupported version");
+
+                if (config.title) {
+                    mainTitle.textContent = config.title;
+                    document.title = config.title;
+                }
+
+                tileContainer.innerHTML = '';
+                const groups = {};
+
+                config.tiles.forEach(tileData => {
+                    const tile = createTile(tileData.title, tileData.url, tileData.image, tileData.className);
+                    const gIdx = tileData.groupIndex;
+
+                    if (!groups[gIdx]) {
+                        const groupWrapper = document.createElement('div');
+                        groupWrapper.className = 'tile-group-wrapper';
+
+                        const labelDiv = document.createElement('div');
+                        labelDiv.className = 'tile-group-label';
+                        const labelText = config.groupLabels?.[gIdx] || defaultGroupLabels[gIdx] || `Group ${gIdx + 1}`;
+                        const labelSpan = document.createElement('span');
+                        labelSpan.textContent = labelText;
+                        labelDiv.appendChild(labelSpan);
+                        labelDiv.dataset.label = labelText;
+                        labelDiv.dataset.groupIndex = gIdx;
+
+                        const editLabelBtn = document.createElement('button');
+                        editLabelBtn.className = 'edit-label-btn';
+                        editLabelBtn.textContent = 'Edit Label';
+                        editLabelBtn.addEventListener('click', () => editGroupLabel(labelDiv));
+                        labelDiv.appendChild(editLabelBtn);
+
+                        const newGroup = document.createElement('div');
+                        newGroup.className = 'tile-group';
+                        newGroup.dataset.groupIndex = gIdx;
+
+                        groupWrapper.appendChild(labelDiv);
+                        groupWrapper.appendChild(newGroup);
+                        tileContainer.appendChild(groupWrapper);
+                        groups[gIdx] = newGroup;
+                    }
+                    groups[gIdx].appendChild(tile);
+                });
+
+                saveTilesAndLabels();
+                updateAddButtonState();
+                alert("Imported successfully!");
+            } catch (e) {
+                alert("Invalid configuration:\n" + e.message);
+            }
+        });
+
+        // ── Edit group label ─────────────────────────────
+        function editGroupLabel(labelDiv) {
+            if (!editMode) return;
+            const groupIndex = labelDiv.dataset.groupIndex;
+            const currentLabel = labelDiv.dataset.label;
+            const newLabel = prompt('Enter group label (leave blank to revert to default):', currentLabel);
+            if (newLabel === null) return;
+
+            const labelSpan = labelDiv.querySelector('span');
+            if (newLabel.trim() === '') {
+                if (confirm('Revert to default label?')) {
+                    const def = defaultGroupLabels[groupIndex] || `Group ${parseInt(groupIndex) + 1}`;
+                    labelSpan.textContent = def;
+                    labelDiv.dataset.label = def;
+                }
+            } else {
+                labelSpan.textContent = newLabel.trim();
+                labelDiv.dataset.label = newLabel.trim();
+            }
+            saveTilesAndLabels();
+        }
+
+        // ── Edit mode toggle (with PIN) ──────────────────
+        editModeBtn.addEventListener('click', () => {
+            if (!editingUnlocked) {
+                const entered = prompt("Enter edit PIN to continue:");
+                if (!entered || entered !== editPin) {
+                    alert("Incorrect PIN. Editing remains locked.");
+                    return;
+                }
+                editingUnlocked = true;
+                alert("Editing unlocked for this session!");
+            }
+
+            editMode = !editMode;
+            document.body.classList.toggle('edit-mode', editMode);
+
+            editModeBtn.textContent = editMode ? 'Exit Edit Mode' : 'Enter Edit Mode';
+            editModeBtn.classList.toggle('active', editMode);
+
+            document.querySelectorAll('.tile').forEach(tile => {
+                tile.classList.toggle('edit-mode', editMode);
+                tile.setAttribute('draggable', editMode);
+            });
+
+            document.querySelectorAll('.tile-group-label').forEach(label => {
+                label.classList.toggle('edit-mode', editMode);
+            });
+
+            shareContainer.style.display = editMode ? 'block' : 'none';
+        });
+
+        // ── Create Blank Slate ───────────────────────────
+        blankSlateBtn.addEventListener('click', () => {
+            if (!confirm('Create a blank slate?\n\nThis will remove ALL current tiles, groups and the custom title. You can then start fresh.')) {
+                return;
+            }
+
+            tileContainer.innerHTML = '';
+            localStorage.removeItem(storageKey);
+
+            mainTitle.textContent = "My Dashboard";
+            document.title = "My Dashboard";
+
+            // Optional welcome group + starter tile
+            const welcomeWrapper = document.createElement('div');
+            welcomeWrapper.className = 'tile-group-wrapper';
+
+            const labelDiv = document.createElement('div');
+            labelDiv.className = 'tile-group-label';
+            labelDiv.innerHTML = '<span>Your Resources</span><button class="edit-label-btn">Edit Label</button>';
+            labelDiv.dataset.label = "Your Resources";
+            labelDiv.dataset.groupIndex = 0;
+
+            const groupDiv = document.createElement('div');
+            groupDiv.className = 'tile-group';
+            groupDiv.dataset.groupIndex = 0;
+
+            welcomeWrapper.appendChild(labelDiv);
+            welcomeWrapper.appendChild(groupDiv);
+            tileContainer.appendChild(welcomeWrapper);
+
+            const starterTile = createTile(
+                "Click to edit or delete me",
+                "https://example.com",
+                "https://picsum.photos/96/96?random=99",
+                "tile-1"
+            );
+            groupDiv.appendChild(starterTile);
+
+            updateAddButtonState();
+            alert("Blank slate ready! Add your own tiles and groups.");
+        });
+
+        // ── Reset ────────────────────────────────────────
+        resetLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (confirm('Reset to original defaults? All custom changes will be lost.')) {
+                localStorage.removeItem(storageKey);
+                tileContainer.innerHTML = '';
+                loadTiles();
+            }
+        });
+
+        // ── Help modal ───────────────────────────────────
+        helpLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            helpModal.style.display = 'flex';
+        });
+        closeModal.addEventListener('click', () => {
+            helpModal.style.display = 'none';
+        });
+        helpModal.addEventListener('click', (e) => {
+            if (e.target === helpModal) helpModal.style.display = 'none';
+        });
+
+        // ── Add Tile ─────────────────────────────────────
+        addTileBtn.addEventListener('click', () => {
+            const total = document.querySelectorAll('.tile').length;
+            if (total >= maxTiles) {
+                alert('Maximum 25 tiles reached.');
+                return;
+            }
+
+            const newTitleRaw = prompt('Tile title (use + for a line break)\nExample: Main Title+Subtitle');
+            if (!newTitleRaw?.trim()) return;
+
+            // Convert + into real line breaks
+            const finalTitle = newTitleRaw.replace(/\+/g, '\n').trim();
+
+            let newUrl = prompt('URL (leave blank for placeholder):')?.trim() || placeholderUrl;
+            let newImage = prompt('Image URL (leave blank for random):')?.trim() || `https://picsum.photos/96/96?random=${total + 1}`;
+
+            const newTile = createTile(finalTitle, newUrl, newImage, `tile-${(total + 1) % 25 || 25}`);
+
+            let targetGroup = null;
+            const groups = Array.from(tileContainer.querySelectorAll('.tile-group'));
+            for (let g of groups) {
+                if (g.children.length < 4) {
+                    targetGroup = g;
+                    break;
+                }
+            }
+
+            if (!targetGroup) {
+                const idx = groups.length;
+                const wrapper = document.createElement('div');
+                wrapper.className = 'tile-group-wrapper';
+
+                const labelDiv = document.createElement('div');
+                labelDiv.className = 'tile-group-label';
+                const defLabel = defaultGroupLabels[idx] || `Group ${idx + 1}`;
+                const span = document.createElement('span');
+                span.textContent = defLabel;
+                labelDiv.appendChild(span);
+                labelDiv.dataset.label = defLabel;
+                labelDiv.dataset.groupIndex = idx;
+
+                const editBtn = document.createElement('button');
+                editBtn.className = 'edit-label-btn';
+                editBtn.textContent = 'Edit Label';
+                editBtn.addEventListener('click', () => editGroupLabel(labelDiv));
+                labelDiv.appendChild(editBtn);
+
+                targetGroup = document.createElement('div');
+                targetGroup.className = 'tile-group';
+                targetGroup.dataset.groupIndex = idx;
+
+                wrapper.appendChild(labelDiv);
+                wrapper.appendChild(targetGroup);
+                tileContainer.appendChild(wrapper);
+            }
+
+            targetGroup.appendChild(newTile);
+            saveTilesAndLabels();
+            updateAddButtonState();
+        });
+
+        function updateAddButtonState() {
+            const total = document.querySelectorAll('.tile').length;
+            addTileBtn.disabled = total >= maxTiles;
+        }
+
+        function saveTilesAndLabels() {
+            localStorage.setItem(storageKey, JSON.stringify(getCurrentConfig()));
+        }
+
+        function loadTiles() {
+            let savedData;
+            try {
+                savedData = JSON.parse(localStorage.getItem(storageKey));
+            } catch (e) {}
+
+            const tilesToLoad = savedData?.tiles || defaultTiles;
+            const groupLabels = savedData?.groupLabels || defaultGroupLabels;
+            const savedTitle  = savedData?.title || "VAG Essentials";
+
+            mainTitle.textContent = savedTitle;
+            document.title = savedTitle;
+
+            const groups = {};
+            tilesToLoad.forEach(tileData => {
+                const tile = createTile(
+                    tileData.title,
+                    tileData.url,
+                    tileData.image,
+                    tileData.className
+                );
+
+                const groupIndex = tileData.groupIndex ?? 0;
+
+                if (!groups[groupIndex]) {
+                    const wrapper = document.createElement('div');
+                    wrapper.className = 'tile-group-wrapper';
+
+                    const labelDiv = document.createElement('div');
+                    labelDiv.className = 'tile-group-label';
+                    const labelText = groupLabels[groupIndex] || defaultGroupLabels[groupIndex] || `Group ${groupIndex + 1}`;
+                    const span = document.createElement('span');
+                    span.textContent = labelText;
+                    labelDiv.appendChild(span);
+                    labelDiv.dataset.label = labelText;
+                    labelDiv.dataset.groupIndex = groupIndex;
+
+                    const editBtn = document.createElement('button');
+                    editBtn.className = 'edit-label-btn';
+                    editBtn.textContent = 'Edit Label';
+                    editBtn.addEventListener('click', () => editGroupLabel(labelDiv));
+                    labelDiv.appendChild(editBtn);
+
+                    const groupDiv = document.createElement('div');
+                    groupDiv.className = 'tile-group';
+                    groupDiv.dataset.groupIndex = groupIndex;
+
+                    wrapper.appendChild(labelDiv);
+                    wrapper.appendChild(groupDiv);
+                    tileContainer.appendChild(wrapper);
+
+                    groups[groupIndex] = groupDiv;
+                }
+
+                groups[groupIndex].appendChild(tile);
+            });
+
+            updateAddButtonState();
+        }
+
+        // ── Drag & Drop ──────────────────────────────────
+        function setupDragAndDrop() {
+            tileContainer.addEventListener('dragover', e => e.preventDefault());
+
+            tileContainer.addEventListener('drop', e => {
+                e.preventDefault();
+                const dragged = document.querySelector('.tile.dragging');
+                if (!dragged) return;
+
+                const targetTile = e.target.closest('.tile');
+                const targetGroup = e.target.closest('.tile-group');
+                if (!targetGroup) return;
+
+                document.querySelectorAll('.tile-group').forEach(g => g.classList.remove('drag-over'));
+
+                if (targetTile && targetTile !== dragged) {
+                    const rect = targetTile.getBoundingClientRect();
+                    const after = e.clientY > rect.top + rect.height / 2;
+                    targetTile.parentNode.insertBefore(dragged, after ? targetTile.nextSibling : targetTile);
+                } else {
+                    targetGroup.appendChild(dragged);
+                }
+
+                saveTilesAndLabels();
+
+                // Auto-delete empty groups
+                document.querySelectorAll('.tile-group').forEach(group => {
+                    if (group.children.length === 0) {
+                        const wrapper = group.parentElement;
+                        if (wrapper && wrapper.parentElement) {
+                            wrapper.remove();
+                        }
+                    }
+                });
+            });
+
+            tileContainer.addEventListener('dragenter', e => {
+                const g = e.target.closest('.tile-group');
+                if (g) g.classList.add('drag-over');
+            });
+
+            tileContainer.addEventListener('dragleave', e => {
+                const g = e.target.closest('.tile-group');
+                if (g) g.classList.remove('drag-over');
+            });
+        }
+
+        // Initialize
+        loadTiles();
+        setupDragAndDrop();
+    </script>
+</body>
+</html>
